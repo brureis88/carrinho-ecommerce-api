@@ -1,0 +1,23 @@
+{
+  "reporter": "mochawesome",
+  "reporterOptions": {
+    "reportDir": "reports",
+    "reportFilename": "test-report",
+    "reportTitle": "Relatório de Testes - API Carrinho",
+    "reportPageTitle": "Testes da API Carrinho",
+    "embeddedScreenshots": true,
+    "inlineAssets": true,
+    "charts": true,
+    "overwrite": true,
+    "html": true,
+    "json": true,
+    "timestamp": true,
+    "showPassed": true,
+    "showFailed": true,
+    "showPending": true,
+    "showSkipped": true,
+    "quiet": false,
+    "code": true,
+    "autoOpen": false
+  }
+} 

@@ -1,4 +1,5 @@
 const request = require('supertest');
+const { expect } = require('chai');
 const app = require('../src/server');
 
 describe('API Carrinho de Compras', () => {
@@ -13,10 +14,10 @@ describe('API Carrinho de Compras', () => {
         .get('/api/carrinho')
         .expect(200);
 
-      expect(response.body.success).toBe(true);
-      // expect(response.body.data.produtos).toEqual([]);
-      expect(response.body.data.total).toBe(0);
-      // expect(response.body.data.quantidadeItens).toBe(0);
+      expect(response.body.success).to.be.true;
+      // expect(response.body.data.produtos).to.deep.equal([]);
+      expect(response.body.data.total).to.equal(0);
+      // expect(response.body.data.quantidadeItens).to.equal(0);
     });
   });
 
@@ -34,8 +35,8 @@ describe('API Carrinho de Compras', () => {
         .send(produto)
         .expect(201);
 
-      expect(response.body.success).toBe(true);
-      expect(response.body.data).toEqual(produto);
+      expect(response.body.success).to.be.true;
+      expect(response.body.data).to.deep.equal(produto);
     });
 
     it('deve retornar erro quando dados estão incompletos', async () => {
@@ -50,8 +51,8 @@ describe('API Carrinho de Compras', () => {
         .send(produtoIncompleto)
         .expect(400);
 
-      expect(response.body.success).toBe(false);
-      expect(response.body.error).toBe('Dados incompletos');
+      expect(response.body.success).to.be.false;
+      expect(response.body.error).to.equal('Dados incompletos');
     });
 
     it('deve retornar erro quando quantidade é inválida', async () => {
@@ -67,8 +68,8 @@ describe('API Carrinho de Compras', () => {
         .send(produto)
         .expect(400);
 
-      expect(response.body.success).toBe(false);
-      expect(response.body.error).toBe('Quantidade inválida');
+      expect(response.body.success).to.be.false;
+      expect(response.body.error).to.equal('Quantidade inválida');
     });
 
     it('deve atualizar quantidade quando produto já existe', async () => {
@@ -91,8 +92,8 @@ describe('API Carrinho de Compras', () => {
         .send(produto)
         .expect(200);
 
-      expect(response.body.success).toBe(true);
-      expect(response.body.data.quantidade).toBe(4); // 2 + 2
+      expect(response.body.success).to.be.true;
+      expect(response.body.data.quantidade).to.equal(4); // 2 + 2
     });
   });
 
@@ -114,8 +115,8 @@ describe('API Carrinho de Compras', () => {
         .send({ quantidade: 5 })
         .expect(200);
 
-      expect(response.body.success).toBe(true);
-      expect(response.body.data.quantidade).toBe(5);
+      expect(response.body.success).to.be.true;
+      expect(response.body.data.quantidade).to.equal(5);
     });
 
     it('deve retornar erro quando produto não existe', async () => {
@@ -124,8 +125,8 @@ describe('API Carrinho de Compras', () => {
         .send({ quantidade: 5 })
         .expect(404);
 
-      expect(response.body.success).toBe(false);
-      expect(response.body.error).toBe('Produto não encontrado');
+      expect(response.body.success).to.be.false;
+      expect(response.body.error).to.equal('Produto não encontrado');
     });
 
     it('deve retornar erro quando quantidade é inválida', async () => {
@@ -134,8 +135,8 @@ describe('API Carrinho de Compras', () => {
         .send({ quantidade: 0 })
         .expect(400);
 
-      expect(response.body.success).toBe(false);
-      expect(response.body.error).toBe('Quantidade inválida');
+      expect(response.body.success).to.be.false;
+      expect(response.body.error).to.equal('Quantidade inválida');
     });
   });
 
@@ -156,15 +157,15 @@ describe('API Carrinho de Compras', () => {
         .delete('/api/carrinho/1')
         .expect(200);
 
-      expect(response.body.success).toBe(true);
-      expect(response.body.data.id).toBe(1);
+      expect(response.body.success).to.be.true;
+      expect(response.body.data.id).to.equal(1);
 
       // Verificar se o produto foi removido
       const carrinhoResponse = await request(app)
         .get('/api/carrinho')
         .expect(200);
 
-      expect(carrinhoResponse.body.data.produtos).toEqual([]);
+      expect(carrinhoResponse.body.data.produtos).to.deep.equal([]);
     });
 
     it('deve retornar erro quando produto não existe', async () => {
@@ -172,8 +173,8 @@ describe('API Carrinho de Compras', () => {
         .delete('/api/carrinho/999')
         .expect(404);
 
-      expect(response.body.success).toBe(false);
-      expect(response.body.error).toBe('Produto não encontrado');
+      expect(response.body.success).to.be.false;
+      expect(response.body.error).to.equal('Produto não encontrado');
     });
   });
 
@@ -195,10 +196,10 @@ describe('API Carrinho de Compras', () => {
         .delete('/api/carrinho/limpar')
         .expect(200);
 
-      expect(response.body.success).toBe(true);
-      expect(response.body.data.produtos).toEqual([]);
-      expect(response.body.data.total).toBe(0);
-      expect(response.body.data.quantidadeItens).toBe(0);
+      expect(response.body.success).to.be.true;
+      expect(response.body.data.produtos).to.deep.equal([]);
+      expect(response.body.data.total).to.equal(0);
+      expect(response.body.data.quantidadeItens).to.equal(0);
     });
   });
 
@@ -220,9 +221,9 @@ describe('API Carrinho de Compras', () => {
         .get('/api/carrinho')
         .expect(200);
 
-      expect(response.body.data.produtos).toHaveLength(3);
-      expect(response.body.data.total).toBe(10.00 * 2 + 15.50 * 1 + 5.25 * 3);
-      expect(response.body.data.quantidadeItens).toBe(3);
+      expect(response.body.data.produtos).to.have.lengthOf(3);
+      expect(response.body.data.total).to.equal(10.00 * 2 + 15.50 * 1 + 5.25 * 3);
+      expect(response.body.data.quantidadeItens).to.equal(3);
     });
   });
 }); 
